@@ -13,8 +13,12 @@ public class RestApi {
     public static final String ADD_TO_CART = BASE_URL + "/add-to-cart";
 
     public static final String REGISTER_USER = BASE_URL + "/register-user";
+    public static final String LOGIN_USER = BASE_URL + "/login-user";
 
     public static final String ADD_PRODUCT = BASE_URL + "/add-product";
+    public static final String GET_ALL_PRODUCT = BASE_URL + "/get-all-product";
+    public static final String FIND_BY_ID = BASE_URL + "/find-by-id";
+    public static final String DELETE_PRODUCT = BASE_URL + "/delete-product";
 
     public static final String ADD_CATEGORY = BASE_URL + "/add-category";
     public static final String MAIN_CATEGORY = BASE_URL + "/main-category";
