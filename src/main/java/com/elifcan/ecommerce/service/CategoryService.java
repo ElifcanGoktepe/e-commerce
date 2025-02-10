@@ -8,6 +8,8 @@ import com.elifcan.ecommerce.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -23,5 +25,13 @@ public class CategoryService {
                 .build();
         categoryRepository.save(category);
         return category;
+    }
+
+    public List<Category> getMainCategory() {
+        return categoryRepository.findAllByParentId(0L);
+    }
+
+    public List<Category> getSubCategories(Long parentId) {
+        return categoryRepository.findAllByParentId(parentId);
     }
 }
