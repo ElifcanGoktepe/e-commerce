@@ -18,4 +18,5 @@ public class RestApi {
 
     public static final String ADD_CATEGORY = BASE_URL + "/add-category";
     public static final String MAIN_CATEGORY = BASE_URL + "/main-category";
+    public static final String SUB_CATEGORY = BASE_URL + "/sub-category";
 }
