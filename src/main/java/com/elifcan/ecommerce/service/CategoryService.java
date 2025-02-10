@@ -32,6 +32,6 @@ public class CategoryService {
     }
 
     public List<Category> getSubCategories(Long parentId) {
-        return categoryRepository.findAllByParentId(parentId);
+        return categoryRepository.findAllByParentIdEquals(parentId);
     }
 }

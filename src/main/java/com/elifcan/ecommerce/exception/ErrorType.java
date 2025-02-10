@@ -8,10 +8,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorType {
 
-    PASSWORD_ERROR(4007, "Entered password is incorrect.", HttpStatus.BAD_REQUEST),
-    PRODUCT_NOT_EXIST(4006,"Product not exist.", HttpStatus.BAD_REQUEST),
+    PRODUCT_NOT_FOUND(4009,"Product is not found.", HttpStatus.BAD_REQUEST),
+    PASSWORD_ERROR(4008, "Entered password is incorrect.", HttpStatus.BAD_REQUEST),
+    PRODUCT_NOT_EXIST(4007,"Product not exist.", HttpStatus.BAD_REQUEST),
     USER_NOT_EXIST(4006,"User not exist.", HttpStatus.BAD_REQUEST),
-    CART_NOT_EXIST(4006,"Cart not exist.", HttpStatus.BAD_REQUEST),
+    CART_NOT_EXIST(4005,"Cart not exist.", HttpStatus.BAD_REQUEST),
     EMAIL_PASSWORD_ERROR(4004, "Username or password is incorrect.",HttpStatus.BAD_REQUEST),
     SIFREHATASI(4003, "Password is incorrect.", HttpStatus.BAD_REQUEST),
     BAD_REQUEST(4002, "Entered parameter is invalid.", HttpStatus.BAD_REQUEST),

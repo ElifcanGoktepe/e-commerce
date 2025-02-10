@@ -41,7 +41,7 @@ public class CategoryController {
     }
 
     @GetMapping(SUB_CATEGORY)
-    public ResponseEntity<BaseResponse<List<Category>>> getSubCategories(@PathVariable Long parentId){
+    public ResponseEntity<BaseResponse<List<Category>>> getSubCategories(Long parentId){
         return ResponseEntity.ok(BaseResponse.<List<Category>>builder()
                         .message("Sub categories listed below.")
                         .code(200)
