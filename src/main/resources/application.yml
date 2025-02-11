@@ -6,9 +6,15 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ecdb
-    username: postgres
-    password: root
+    url: ${POSTGRE_URL}
+    username: ${POSTGRE_USER_NAME}
+    password: ${POSTGRE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
+
+
+
+my-application:
+  product-title: 'New Java HS2'
+  default-price: 1000

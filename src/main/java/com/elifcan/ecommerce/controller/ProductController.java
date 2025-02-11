@@ -7,6 +7,8 @@ import com.elifcan.ecommerce.service.ProductService;
 import com.elifcan.ecommerce.view.VwProductList;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,21 @@ import static com.elifcan.ecommerce.congif.RestApi.*;
 public class ProductController {
 
     private final ProductService productService;
+
+    /**
+     * Reading infomation in Application.yml
+     *
+     * For this case @Value is used
+     */
+
+    @Value("{$my-application.product-title}")
+    private String productTitle;
+
+    @GetMapping("/yml-read")
+    public ResponseEntity<Void> ymlRead(){
+        System.out.println("Product name : " + productTitle);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping(ADD_PRODUCT)
     public ResponseEntity<BaseResponse<Boolean>> addProduct(@RequestBody @Valid AddProductRequestDto dto) {

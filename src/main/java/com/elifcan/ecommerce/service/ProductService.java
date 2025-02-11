@@ -4,11 +4,13 @@ import com.elifcan.ecommerce.dto.request.AddProductRequestDto;
 import com.elifcan.ecommerce.entity.Product;
 import com.elifcan.ecommerce.exception.ECommerceException;
 import com.elifcan.ecommerce.exception.ErrorType;
+import com.elifcan.ecommerce.mapper.ProductMapper;
 import com.elifcan.ecommerce.repository.ProductRepository;
 import com.elifcan.ecommerce.view.VwProductList;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.service.GenericResponseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,19 +20,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final GenericResponseService responseBuilder;
 
     public void addProduct(AddProductRequestDto dto) {
-        productRepository.save(Product.builder()
-                        .name(dto.name())
-                        .categoryId(dto.categoryId())
-                        .categoryName(dto.categoryName())
-                        .image(dto.image())
-                        .price(dto.price())
-                        .stock(dto.stock())
-                        .vat(dto.vat())
-                        .unit(dto.unit())
-                        .criticalStock(dto.criticalStock())
-                .build());
+//        Product product = Product.builder()
+//                        .name(dto.name())
+//                        .categoryId(dto.categoryId())
+//                        .categoryName(dto.categoryName())
+//                        .image(dto.image())
+//                        .price(dto.price())
+//                        .stock(dto.stock())
+//                        .vat(dto.vat())
+//                        .unit(dto.unit())
+//                        .criticalStock(dto.criticalStock())
+//                .build();
+        productRepository.save(ProductMapper.INSTANCE.createProductObjectFromDto(dto));
     }
 
     public Optional<Product> findOptionalByProductId(Long productId) {
