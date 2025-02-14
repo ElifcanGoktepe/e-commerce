@@ -4,6 +4,7 @@ import com.elifcan.ecommerce.dto.request.AddToCartRequestDto;
 import com.elifcan.ecommerce.dto.request.IncreaseDecreaseRequestDto;
 import com.elifcan.ecommerce.dto.request.RemoveAllProductsRequestDto;
 import com.elifcan.ecommerce.dto.request.RemoveProductFromCartRequestDto;
+import com.elifcan.ecommerce.dto.response.CartProductResponseDto;
 import com.elifcan.ecommerce.entity.Cart;
 import com.elifcan.ecommerce.entity.Product;
 import com.elifcan.ecommerce.entity.ProductInCart;
@@ -16,6 +17,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,13 +45,26 @@ public class CartService {
         Optional<Product> productOptional = productService.findOptionalByProductId(dto.productId());
         if (productOptional.isEmpty()) throw new ECommerceException(ErrorType.PRODUCT_NOT_EXIST);
         Product product = productOptional.get();
-        ProductInCart productInCart = ProductInCart.builder()
-                .productId(dto.productId())
-                .cartId(cart.getId())
-                .quantity(1)
-                .unitPrice(product.getPrice())
-                .totalPrice(product.getPrice())
-                .build();
+        /**
+         * If the product has already existed in the cart, increase the quantity.
+         */
+        Optional<ProductInCart> pIC =productInCartRepository.findOptionalByCartIdAndProductId(cart.getId(), dto.productId());
+        ProductInCart productInCart;
+        if (pIC.isEmpty()) {
+            productInCart = ProductInCart.builder()
+                    .productId(dto.productId())
+                    .cartId(cart.getId())
+                    .quantity(1)
+                    .unitPrice(product.getPrice())
+                    .totalPrice(product.getPrice())
+                    .build();
+        }
+        else{
+            productInCart = pIC.get();
+            productInCart.setQuantity(productInCart.getQuantity() + 1);
+            productInCart.setTotalPrice(product.getPrice().multiply(new BigDecimal(productInCart.getQuantity())));
+        }
+
         productInCartRepository.save(productInCart);
     }
 
@@ -58,7 +74,6 @@ public class CartService {
         if (productInCart.isEmpty()) throw new ECommerceException(ErrorType.PRODUCT_NOT_FOUND);
         productInCartRepository.delete(productInCart.get());
     }
-
 
     public void removeAllProducts(RemoveAllProductsRequestDto dto) {
         Long cartId = getCartIdFromUserId(dto.kullaniciId());
@@ -83,6 +98,28 @@ public class CartService {
                 productInCartRepository.delete(productInCart1);
             }
         }
+    }
+
+    public List<CartProductResponseDto> getAllCart ( Long userId) {
+        List<CartProductResponseDto> result = new ArrayList<>();
+        Long cartId = getCartIdFromUserId(userId);
+        List<ProductInCart> cartList = productInCartRepository.findAllByCartId(cartId);
+        cartList.forEach(s->{
+            Optional <Product> product = productService.findOptionalById(s.getProductId());
+            if(product.isPresent()){
+                CartProductResponseDto dto = new CartProductResponseDto(
+                        s.getId(),
+                        s.getProductId(),
+                        product.get().getName(),
+                        product.get().getImage(),
+                        s.getQuantity(),
+                        s.getUnitPrice(),
+                        s.getTotalPrice()
+                );
+            result.add(dto);
+            }
+        });
+        return result;
     }
 
     private Long getCartIdFromUserId(Long userId) {

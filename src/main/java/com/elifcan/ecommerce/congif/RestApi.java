@@ -11,6 +11,9 @@ public class RestApi {
     public static final String USER = BASE_URL + "/user";
 
     public static final String ADD_TO_CART = BASE_URL + "/add-to-cart";
+    public static final String REMOVE_FROM_CART = BASE_URL + "/remove-from-cart";
+    public static final String CLEAR_CART = BASE_URL + "/clear-cart";
+    public static final String UP_DOWN_SEPET =BASE_URL + "/up-down-sepe";
 
     public static final String REGISTER_USER = BASE_URL + "/register-user";
     public static final String LOGIN_USER = BASE_URL + "/login-user";
