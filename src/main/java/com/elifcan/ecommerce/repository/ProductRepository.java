@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository <Product, Long> {
 
-    @Query("select new com.elifcan.ecommerce.view.VwProductList(p.id, p.name, p.categoryName, p.image, p.price) from Product p")
+    @Query("select new com.elifcan.ecommerce.view.VwProductList(p.id, p.name, " +
+            "p.categoryName, p.image, p.price) from Product p")
     List<VwProductList> getProductList();
 
     List<Product> findAllByNameContaining(String name);

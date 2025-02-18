@@ -1,5 +1,6 @@
 package com.elifcan.ecommerce.controller;
 
+import com.elifcan.ecommerce.congif.JwtManager;
 import com.elifcan.ecommerce.dto.request.LoginUserDto;
 import com.elifcan.ecommerce.dto.request.RegisterUserRequestDto;
 import com.elifcan.ecommerce.dto.response.BaseResponse;
@@ -25,6 +26,7 @@ import static com.elifcan.ecommerce.congif.RestApi.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtManager jwtManager;
 
     @PostMapping(REGISTER_USER)
     private ResponseEntity<BaseResponse<Boolean>> registerUser(@RequestBody @Valid RegisterUserRequestDto dto) {
@@ -38,13 +40,13 @@ public class UserController {
     }
 
     @PostMapping(LOGIN_USER)
-    private ResponseEntity<BaseResponse<Long>> loginUser(@RequestBody @Valid LoginUserDto dto){
+    private ResponseEntity<BaseResponse<String>> loginUser(@RequestBody @Valid LoginUserDto dto){
         Optional<User> userOptional = userService.findByEmailAndPassword(dto);
         if(userOptional.isEmpty()) throw new ECommerceException(ErrorType.EMAIL_PASSWORD_ERROR);
-        return ResponseEntity.ok(BaseResponse.<Long>builder()
+        return ResponseEntity.ok(BaseResponse.<String>builder()
                         .code(200)
                         .message("Login successful")
-                        .data(userOptional.get().getId())
+                        .data(jwtManager.createToken(userOptional.get().getId()))
                 .build());
 
     }

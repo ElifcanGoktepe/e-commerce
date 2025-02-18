@@ -18,3 +18,6 @@ spring:
 my-application:
   product-title: 'New Java HS2'
   default-price: 1000
+
+my-jwt:
+  secret-key: ${JWTKEY}

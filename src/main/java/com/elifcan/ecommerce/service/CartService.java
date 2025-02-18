@@ -13,7 +13,6 @@ import com.elifcan.ecommerce.exception.ErrorType;
 import com.elifcan.ecommerce.repository.CartRepository;
 import com.elifcan.ecommerce.repository.ProductInCartRepository;
 import com.elifcan.ecommerce.utility.enums.CartChange;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

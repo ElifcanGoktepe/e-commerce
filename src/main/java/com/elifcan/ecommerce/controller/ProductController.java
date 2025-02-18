@@ -1,8 +1,11 @@
 package com.elifcan.ecommerce.controller;
 
+import com.elifcan.ecommerce.congif.JwtManager;
 import com.elifcan.ecommerce.dto.request.AddProductRequestDto;
 import com.elifcan.ecommerce.dto.response.BaseResponse;
 import com.elifcan.ecommerce.entity.Product;
+import com.elifcan.ecommerce.exception.ECommerceException;
+import com.elifcan.ecommerce.exception.ErrorType;
 import com.elifcan.ecommerce.service.ProductService;
 import com.elifcan.ecommerce.view.VwProductList;
 import jakarta.validation.Valid;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.elifcan.ecommerce.congif.RestApi.*;
 
@@ -23,6 +27,7 @@ import static com.elifcan.ecommerce.congif.RestApi.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final JwtManager jwtManager;
 
     /**
      * Reading infomation in Application.yml
@@ -49,8 +54,11 @@ public class ProductController {
                 .build());
     }
 
-    @GetMapping(GET_ALL_PRODUCT)
-    public ResponseEntity<BaseResponse<List<VwProductList>>> getAllProduct(){
+    @GetMapping(GET_ALL_PRODUCT + "/{token}")
+    public ResponseEntity<BaseResponse<List<VwProductList>>> getAllProduct(@PathVariable String token) {
+        Optional<Long> userId = jwtManager.validateToken(token);
+        if(userId.isEmpty())
+            throw new ECommerceException(ErrorType.INVALID_TOKEN);
         return ResponseEntity.ok(BaseResponse.<List<VwProductList>>builder()
                         .code(200)
                         .message("Products listed below.")

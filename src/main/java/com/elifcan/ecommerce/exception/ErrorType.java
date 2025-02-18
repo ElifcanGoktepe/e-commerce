@@ -17,7 +17,8 @@ public enum ErrorType {
     SIFREHATASI(4003, "Password is incorrect.", HttpStatus.BAD_REQUEST),
     BAD_REQUEST(4002, "Entered parameter is invalid.", HttpStatus.BAD_REQUEST),
     ALREADY_EXISTS(4005, "Category already exist.", HttpStatus.BAD_REQUEST),
-    INTERNAL_SERVER(5000,"Unexpected error occurs.",HttpStatus.INTERNAL_SERVER_ERROR);
+    INTERNAL_SERVER(5000,"Unexpected error occurs.",HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_TOKEN(5001,"Invalid Token",HttpStatus.INTERNAL_SERVER_ERROR);
 
     int code;
     String message;
