@@ -1,6 +1,6 @@
 package com.elifcan.ecommerce.controller;
 
-import com.elifcan.ecommerce.congif.JwtManager;
+import com.elifcan.ecommerce.config.JwtManager;
 import com.elifcan.ecommerce.dto.request.AddProductRequestDto;
 import com.elifcan.ecommerce.dto.response.BaseResponse;
 import com.elifcan.ecommerce.entity.Product;
@@ -8,6 +8,7 @@ import com.elifcan.ecommerce.exception.ECommerceException;
 import com.elifcan.ecommerce.exception.ErrorType;
 import com.elifcan.ecommerce.service.ProductService;
 import com.elifcan.ecommerce.view.VwProductList;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static com.elifcan.ecommerce.congif.RestApi.*;
+import static com.elifcan.ecommerce.config.RestApi.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(PRODUCT)
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
     private final ProductService productService;
@@ -66,6 +68,15 @@ public class ProductController {
                 .build());
     }
 
+    @GetMapping(GET_ALL_PRODUCT)
+    public ResponseEntity<BaseResponse<List<VwProductList>>> getAllProduct(){
+        return ResponseEntity.ok(BaseResponse.<List<VwProductList>>builder()
+                .code(200)
+                .message("Products listed below.")
+                .data(productService.getVwProductList())
+                .build());
+    }
+
     @GetMapping(FIND_BY_ID + "/{productName}")
     public ResponseEntity<BaseResponse<List<Product>>> findByName(@PathVariable String productName){
         return ResponseEntity.ok(BaseResponse.<List<Product>>builder()
@@ -82,6 +93,16 @@ public class ProductController {
                 .code(200)
                 .message("Product deleted successfully.")
                 .data(true)
+                .build());
+    }
+    @GetMapping("find-by-product-id/{productId}")
+    public ResponseEntity<BaseResponse<Product>> findByProductId(@PathVariable Long productId){
+        Optional<Product> productOptional = productService.findOptionalByProductId(productId);
+        if(productOptional.isEmpty()) throw new ECommerceException(ErrorType.PRODUCT_NOT_FOUND);
+        return ResponseEntity.ok(BaseResponse.<Product>builder()
+                .code(200)
+                .data(productOptional.get())
+                .message("Product information is written below.")
                 .build());
     }
 }

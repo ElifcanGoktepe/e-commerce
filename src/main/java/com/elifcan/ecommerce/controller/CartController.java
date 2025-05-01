@@ -1,5 +1,6 @@
 package com.elifcan.ecommerce.controller;
 
+import com.elifcan.ecommerce.config.JwtManager;
 import com.elifcan.ecommerce.dto.request.AddToCartRequestDto;
 import com.elifcan.ecommerce.dto.request.IncreaseDecreaseRequestDto;
 import com.elifcan.ecommerce.dto.request.RemoveAllProductsRequestDto;
@@ -7,26 +8,31 @@ import com.elifcan.ecommerce.dto.request.RemoveProductFromCartRequestDto;
 import com.elifcan.ecommerce.dto.response.BaseResponse;
 import com.elifcan.ecommerce.dto.response.CartProductResponseDto;
 import com.elifcan.ecommerce.service.CartService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-import static com.elifcan.ecommerce.congif.RestApi.*;
+import static com.elifcan.ecommerce.config.RestApi.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(CART)
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class CartController {
 
     private final CartService cartService;
+    private final JwtManager jwtManager;
 
     @PostMapping(ADD_TO_CART)
     public ResponseEntity<BaseResponse<Boolean>> addToCart(@RequestBody @Valid AddToCartRequestDto dto) {
-        cartService.addToCart(dto);
+        Optional<Long> optionalUserID = jwtManager.validateToken(dto.token());
+        cartService.addToCart(dto, optionalUserID.get());
         return ResponseEntity.ok(BaseResponse.<Boolean>builder()
                 .data(true)
                 .code(200)

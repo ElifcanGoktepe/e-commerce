@@ -4,6 +4,7 @@ import com.elifcan.ecommerce.dto.request.AddCategoryRequestDto;
 import com.elifcan.ecommerce.dto.response.BaseResponse;
 import com.elifcan.ecommerce.entity.Category;
 import com.elifcan.ecommerce.service.CategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.elifcan.ecommerce.congif.RestApi.*;
+import static com.elifcan.ecommerce.config.RestApi.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(CATEGORY)
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class CategoryController {
 
     private final CategoryService categoryService;

@@ -29,12 +29,12 @@ public class CartService {
     private final ProductInCartRepository productInCartRepository;
     private final ProductService productService;
 
-    public void addToCart(AddToCartRequestDto dto) {
+    public void addToCart(AddToCartRequestDto dto, Long userId) {
         Cart cart;
-        Optional<Cart> cartOptional = cartRepository.findOptionalByUserId(dto.userId()); // checking any other cart for the user
+        Optional<Cart> cartOptional = cartRepository.findOptionalByUserId(userId); // checking any other cart for the user
         if (cartOptional.isEmpty()) {
             cart = Cart.builder()
-                    .userId(dto.userId())
+                    .userId(userId)
                     .build();
             cartRepository.save(cart);
         }

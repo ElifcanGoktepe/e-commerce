@@ -4,20 +4,31 @@ server:
 
 # Configs for Hibernate and JDBC links
 spring:
+  security:
+    user:
+      name: elifcan
+      password: 147852
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${POSTGRE_URL}
-    username: ${POSTGRE_USER_NAME}
-    password: ${POSTGRE_PASSWORD}
+    url: jdbc:postgresql://192.168.1.111:5432/basiteticaret
+    username: postgres
+    password: BilgeHs2**
   jpa:
     hibernate:
       ddl-auto: update
 
-
+logging:
+  file:
+    name: ecommerce.log
+  logback:
+    rollingpolicy:
+      max-file-size: 2MB
+  level:
+    root: info
 
 my-application:
   product-title: 'New Java HS2'
   default-price: 1000
 
 my-jwt:
-  secret-key: ${JWTKEY}
+  secret-key: "lajljlkdjfkjalgjkfjglfkjalkfj"

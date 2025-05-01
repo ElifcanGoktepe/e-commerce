@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record AddToCartRequestDto(
         @NotNull
         @Min(0)
-        Long userId,
+        String token,
         @NotNull
         @Min(0)
         Long productId

@@ -1,4 +1,4 @@
-package com.elifcan.ecommerce.congif;
+package com.elifcan.ecommerce.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -26,10 +26,15 @@ public class JwtManager {
      * 6 - Sign: necessary for sign to related token. determine the crypto algorithm and create crypto
      */
 
+    /**
+     *  ÇOOK ÖNEMLİ!!!!!
+     *  şifre, token, api key v.s. gibi önemli bilgiler kod içerisinde yazılmaz.
+     */
+
     @Value("${my-jwt.secret-key}")
     private String secretKey;
     private String issuer = "Elifcanmg";
-    private Long expiredDate = 1000L * 45;
+    private Long expiredDate = 1000L * 60 * 60 * 5;
     public String createToken(Long userId){
         String token = "";
         Long now = System.currentTimeMillis(); // current time in terms of Long
